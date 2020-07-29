@@ -46,6 +46,10 @@
 </template>
 
 <script>
+import audio1 from '../assets/1.ogg'
+import audio2 from '../assets/2.ogg'
+import audio3 from '../assets/3.ogg'
+import audio4 from '../assets/4.mp3'
 export default {
     name: 'Game',
     data() {
@@ -54,10 +58,10 @@ export default {
             sequence: [],
             sequenceToGuess: [],
             sounds: {
-                audio1: new Audio('http://www.kellyking.me/projects/simon/sounds/1.ogg'),
-                audio2: new Audio('http://www.kellyking.me/projects/simon/sounds/2.ogg'),
-                audio3: new Audio('http://www.kellyking.me/projects/simon/sounds/3.ogg'),
-                audio4: new Audio('http://www.kellyking.me/projects/simon/sounds/4.mp3')
+                audio1: new Audio(audio1),
+                audio2: new Audio(audio2),
+                audio3: new Audio(audio3),
+                audio4: new Audio(audio4)
             },
             round: 0,
             totalRound: 0,
