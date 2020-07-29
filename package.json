@@ -2,9 +2,11 @@
   "name": "simon_the_game",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://artemartem118.github.io/customer_form/",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -13,6 +15,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-service": "~4.4.0",
+    "gh-pages": "^3.1.0",
     "vue-template-compiler": "^2.6.11"
   },
   "browserslist": [
