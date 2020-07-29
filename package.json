@@ -2,7 +2,7 @@
   "name": "simon_the_game",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://artemartem118.github.io/customer_form/",
+  "homepage": "https://artemartem118.github.io/simon_the_game/",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

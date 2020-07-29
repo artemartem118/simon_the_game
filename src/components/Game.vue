@@ -2,22 +2,26 @@
     <div class="container">
         <div class="wrapper-panels">
             <div
-                @click="penalClicked(1)"
+                @mouseup="penalUp(1)"
+                @mousedown="penalDown(1)"
                 :class="{active: isActive1}"
                 class="panel top-left-panel"
             ></div>
             <div
-                @click="penalClicked(2)"
+                @mouseup="penalUp(2)"
+                @mousedown="penalDown(2)"
                 :class="{active: isActive2}"
                 class="panel top-right-panel"
             ></div>
             <div
-                @click="penalClicked(3)"
+                @mouseup="penalUp(3)"
+                @mousedown="penalDown(3)"
                 :class="{active: isActive3}"
                 class="panel bottom-left-panel"
             ></div>
             <div
-                @click="penalClicked(4)"
+                @mouseup="penalUp(4)"
+                @mousedown="penalDown(4)"
                 :class="{active: isActive4}"
                 class="panel bottom-right-panel"
             ></div>
@@ -33,7 +37,7 @@
                 <label for="isi">Легкий<input v-model="options" :value="1500" name="options" id="isi"
                                               type="radio"></label>
                 <label for="middle">Нормальный<input v-model="options" :value="1000" name="options" id="middle"
-                                                  type="radio"></label>
+                                                     type="radio"></label>
                 <label for="hard">Сложный<input v-model="options" :value="400" name="options" id="hard"
                                                 type="radio"></label>
             </div>
@@ -76,19 +80,25 @@ export default {
         }
     },
     methods: {
-        async penalClicked( panel ) {
+        penalUp( panel ) {
+            this[`isActive${ panel }`] = false
+        },
+        penalDown( panel ) {
 
             if ( !this.canClick ) return
 
             const expectedPanel = this.sequenceToGuess.shift()
 
             if ( expectedPanel === panel ) {
-                await this.flash(panel, 0, 200)
+                this.sounds[`audio${ panel }`].load()
+                this.sounds[`audio${ panel }`].play()
+                this[`isActive${ panel }`] = true
+
                 if ( this.sequenceToGuess.length === 0 ) {
                     this.sequence.push(this.getRandomPanel())
                     this.sequenceToGuess = [ ...this.sequence ]
                     // time for the next level
-                    await new Promise(resolve => setTimeout(() => {
+                    new Promise(resolve => setTimeout(() => {
                         this.startFlashing()
                         resolve()
                     }, 1000))
@@ -119,20 +129,19 @@ export default {
             }
             this.canClick = true
         },
-        async flash( panel, delayBetweenFlashes = 250, activeClassDelay = this.options ) {
+        flash( panel ) {
             this.sounds[`audio${ panel }`].play()
 
-            return await new Promise(resolve => {
+            return new Promise(resolve => {
                 this[`isActive${ panel }`] = true
+
+                //time of flash
                 setTimeout(() => {
                     this[`isActive${ panel }`] = false
-                    if ( delayBetweenFlashes === 0 ) {
-                        resolve()
-                    } else {
-                        setTimeout(() => resolve(), delayBetweenFlashes)
-                    }
 
-                }, activeClassDelay)
+                    // time between flashes
+                    setTimeout(() => resolve(), 250)
+                }, this.options)
             })
         },
         getRandomPanel() {
@@ -190,10 +199,12 @@ export default {
 .setting {
     padding-left: 50px;
 }
-.btn{
+
+.btn {
     padding-top: 15px;
     padding-bottom: 5px;
 }
+
 .title {
     padding-top: 30px;
     font-size: 20px;
